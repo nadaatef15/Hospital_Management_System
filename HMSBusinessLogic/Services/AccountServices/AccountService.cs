@@ -1,18 +1,18 @@
 ﻿using HMSDataAccess.Entity;
 using Microsoft.AspNetCore.Identity;
 using static HMSContracts.Infrastructure.Exceptions.TypesOfExceptions;
-
-namespace HMSDataAccess.Reposatory.Account
+using static HMSContracts.Language.Resource;
+namespace HMSBusinessLogic.Services.AccountServices
 {
-    public interface IAccountReposatory
+    public interface IAccountService
     {
         Task<UserEntity> Login(string username, string password);
     }
-    public class AccountReposatory : IAccountReposatory
+    public class AccountService : IAccountService
     {
         UserManager<UserEntity> userManager;
 
-        public AccountReposatory(UserManager<UserEntity> _userManager)
+        public AccountService(UserManager<UserEntity> _userManager)
         {
             userManager = _userManager;
         }
@@ -21,11 +21,11 @@ namespace HMSDataAccess.Reposatory.Account
             var user = await userManager.FindByEmailAsync(Email);
 
             if (user is null)
-                throw new ConflictException("This Email does not excest");
+                throw new ConflictException(EmailNotFound);
 
             var result = await userManager.CheckPasswordAsync(user, password);
             if (!result)
-                throw new ConflictException("The password is not Correct");
+                throw new ConflictException(WrongPassword);
 
             return user;
         }

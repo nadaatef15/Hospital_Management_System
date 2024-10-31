@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using HMSBusinessLogic.Helpers.Mappers;
+using HMSBusinessLogic.Services.AccountServices;
 using HMSBusinessLogic.Services.GeneralServices;
 using HMSContracts.Model.Identity;
 using HMSDataAccess.Entity;
-using HMSDataAccess.Reposatory.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -23,12 +23,12 @@ namespace HMSBusinessLogic.Manager.AccountManager
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IAccountReposatory _accountReposatory;
+        private readonly IAccountService _accountReposetory;
         private readonly IConfiguration _configuration;
         private readonly IValidator<UserModel> _validator;
         private readonly IFileService _fileService;
 
-        public AccountManager(IAccountReposatory accountReposatory,
+        public AccountManager(IAccountService accountReposatory,
             UserManager<UserEntity> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
@@ -37,7 +37,7 @@ namespace HMSBusinessLogic.Manager.AccountManager
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _accountReposatory = accountReposatory;
+            _accountReposetory = accountReposatory;
             _configuration = configuration;
             _validator = validator;
             _fileService = fileService;
@@ -45,41 +45,41 @@ namespace HMSBusinessLogic.Manager.AccountManager
 
         public async Task<JwtSecurityToken> Login(LoginModel loginModel)
         {
-            var user = await _accountReposatory.Login(loginModel.Email, loginModel.Password);
-           
-                var claims = new List<Claim>()
-                {
-                    new (ClaimTypes.Name ,user.UserName!),
-                    new(ClaimTypes.NameIdentifier ,user.Id),
-                };
-                var roles = await _userManager.GetRolesAsync(user);
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
+            var user = await _accountReposetory.Login(loginModel.Email, loginModel.Password);
 
-                    var identityUser = await _roleManager.FindByNameAsync(role);
-                    var permissions = await _roleManager.GetClaimsAsync(identityUser);
+            var claims = new List<Claim>()
+            {
+                new (ClaimTypes.Name ,user.UserName!),
+                new (ClaimTypes.NameIdentifier ,user.Id),
+            };
 
-                    foreach (var item in permissions)
-                    {
-                        if (item.Type == Permission)
-                            claims.Add(new Claim(Permission, item.Value));
-                    }
-                }
+            var roles = await _userManager.GetRolesAsync(user);
 
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));
-                var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
 
-                var Token = new JwtSecurityToken(
-                     issuer: _configuration["Jwt:Issuer"],
-                     audience: _configuration["Jwt:Audience"],
-                     expires: DateTime.Now.AddHours(2),
-                     claims: claims,
-                     signingCredentials: signingCredentials
-               );
+                var identityRole = await _roleManager.FindByNameAsync(role);
 
-                return Token;
+                var permissions = (await _roleManager.GetClaimsAsync(identityRole!)).Where(x => x.Type == Permission);
+
+                foreach (var item in permissions)
+                    claims.Add(new Claim(Permission, item.Value));
+            }
+
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            var Token = new JwtSecurityToken(
+                 issuer: _configuration["Jwt:Issuer"],
+                 audience: _configuration["Jwt:Audience"],
+                 expires: DateTime.Now.AddHours(2),
+                 claims: claims,
+                 signingCredentials: signingCredentials);
+
+            return Token;
         }
+
         public async Task Register(UserModel user)
         {
             await _validator.ValidateAndThrowAsync(user);

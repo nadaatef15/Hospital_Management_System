@@ -3,6 +3,7 @@ using HMSContracts.Model.Permission;
 using Microsoft.AspNetCore.Identity;
 using static HMSContracts.Constants.SysConstants;
 using static HMSContracts.Infrastructure.Exceptions.TypesOfExceptions;
+using static HMSContracts.Language.Resource;
 
 namespace HMSBusinessLogic.Manager.PermissionManager
 {
@@ -55,7 +56,7 @@ namespace HMSBusinessLogic.Manager.PermissionManager
                 });
             }
             else
-                throw new NotFoundException("this role is not excest");
+                throw new NotFoundException(RoleDoesnotExist);
 
 
             return permissionModels;
@@ -84,7 +85,7 @@ namespace HMSBusinessLogic.Manager.PermissionManager
                     }
                 });
             }
-            throw new NotFoundException("this role is not excest");
+            throw new NotFoundException(RoleDoesnotExist);
 
         }
     }

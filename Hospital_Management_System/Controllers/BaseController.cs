@@ -7,7 +7,7 @@ namespace Hospital_Management_System.Controllers
     [Route("HMS/[controller]")]
     [ApiController]
     [GlobalExceptionHandler]
-    public class Controller : ControllerBase
+    public class BaseController : ControllerBase
     {
     }
 }

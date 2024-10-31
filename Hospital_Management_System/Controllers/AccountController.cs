@@ -1,21 +1,26 @@
 ﻿using HMSBusinessLogic.Manager.AccountManager;
+using HMSContracts.Email;
 using HMSContracts.Model.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Hospital_Management_System.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private readonly IAccountManager accounntManager;
-        public AccountController(IAccountManager _accounntManager) =>
-            accounntManager = _accounntManager;
+        private readonly IAccountManager _accountManager;
+        private readonly IEmail _emailSender;
+        public AccountController(IAccountManager accountManager, IEmail emailSender)
+        {
+            _accountManager = accountManager;
+            _emailSender = emailSender;
+        }
 
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            var token = await accounntManager.Login(loginModel);
+            var token = await _accountManager.Login(loginModel);
             if (token is not null)
             {
                 return Ok(new
@@ -28,10 +33,17 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromForm]UserModel userModel)
+        public async Task<IActionResult> Register([FromForm] UserModel userModel)
         {
-                await accounntManager.Register(userModel);
-                return Created();
+            await _accountManager.Register(userModel);
+            return Created();
+        }
+
+        [HttpPost("SendingEmail")]
+        public async Task<IActionResult> SendingEmail()
+        {
+            await _emailSender.SendEmailAsync("sagdallrahman3@gmail.com", "This is test", "I am nada");
+            return Ok("SendSuccessfully");
         }
     }
 }

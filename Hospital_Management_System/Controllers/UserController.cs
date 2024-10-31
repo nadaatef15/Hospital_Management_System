@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital_Management_System.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         IUserManager userManager;
         public UserController(IUserManager _userManager)
@@ -12,8 +12,8 @@ namespace Hospital_Management_System.Controllers
             userManager = _userManager;
         }
 
-        [HttpPost("AddRolesToUser")]
-        public async Task<IActionResult> AddRolesToUser(string userId, List<string> roleName)
+        [HttpPost("AssignRolesToUser")]
+        public async Task<IActionResult> AssignRolesToUser(string userId, List<string> roleName)
         {
             await userManager.AssignRolesToUser(userId, roleName);
             return Ok();
@@ -26,21 +26,14 @@ namespace Hospital_Management_System.Controllers
             return Ok(user);
         }
 
-        [HttpPut("UpdateRolesForUser")]
-        public async Task<IActionResult> UpdateRolesForUser(string userId, List<string> roleName)
-        {
-            await userManager.UpdateRolesForUser(userId, roleName);
-            return Ok();
-        }
-
-        [HttpDelete("Delete")]
+        [HttpDelete("DeleteRoleById")]
         public async Task<IActionResult> Delete(string UserId)
         {
             await userManager.DeleteUser(UserId);
             return Ok();
         }
 
-        [HttpPut("Update")]
+        [HttpPut("UpdateRole")]
         public async Task<IActionResult> Updateuser(string userId, [FromForm]ModifyUser userModel)
         {
             await userManager.UpdateUser(userId, userModel);

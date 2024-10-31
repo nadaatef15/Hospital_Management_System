@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using HMSDataAccess.Entity;
-
+using static HMSContracts.Language.Resource;
 namespace HMSBusinessLogic.Validators
 {
 
@@ -12,12 +12,12 @@ namespace HMSBusinessLogic.Validators
             RuleFor(x => x.ImagePath)
                 .NotEmpty()
                 .When(x => x.ImagePath == null)
-                .WithMessage("You must upload a file or provide an image path.");
+                .WithMessage(MustUpload);
 
             RuleFor(x => x.ImagePath)
                 .Must(IsValidUrl)
                 .When(x => !string.IsNullOrEmpty(x.ImagePath))
-                .WithMessage("The provided image path must be a valid URL.");
+                .WithMessage(ValidUrl);
         }
 
         private bool IsValidUrl(string imagePath)

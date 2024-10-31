@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital_Management_System.Controllers
 {
-    public class PermissionController : Controller
+    public class PermissionController : BaseController
     {
         IPermission permissionManager;
         public PermissionController(IPermission _permissionManager)

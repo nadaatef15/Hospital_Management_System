@@ -1,64 +1,62 @@
-﻿using HMSContracts.Model.Identity;
-using HMSDataAccess.Reposatory.Identity;
+﻿using HMSBusinessLogic.Services.AccountServices;
+using HMSContracts.Model.Identity;
 using Microsoft.AspNetCore.Identity;
 using static HMSContracts.Infrastructure.Exceptions.TypesOfExceptions;
+using static HMSContracts.Language.Resource;
+
 namespace HMSBusinessLogic.Manager.IdentityManager
 {
     public interface IRoleManager
     {
-        Task createRole(RoleNameModel roleNameDto);
-        Task Delete(string roleId);
-        Task Update(string roleId, RoleNameModel role);
-        Task<IQueryable<string>> GetAll();
+        Task CreateRole(RoleNameModel roleNameDto);
+        Task DeleteRoleById(string roleId);
+        Task UpdateRole(string roleId, RoleNameModel role);
+        Task<List<string?>> GetAllRoles();
     }
 
     public class RoleManager : IRoleManager
     {
-        IRoleReposatory _roleReposatory;
-        RoleManager<IdentityRole> _roleManagerIdentity;
-        public RoleManager(IRoleReposatory roleReposatory, RoleManager<IdentityRole> roleManagerIdentity)
+        private readonly IRoleService _roleService;
+        private readonly RoleManager<IdentityRole> _roleManagerIdentity;
+        public RoleManager(IRoleService roleService, RoleManager<IdentityRole> roleManagerIdentity)
         {
-            _roleReposatory = roleReposatory;
+            _roleService = roleService;
             _roleManagerIdentity = roleManagerIdentity;
         }
-        public async Task createRole(RoleNameModel roleNameModel)
+
+        public async Task CreateRole(RoleNameModel roleNameModel)
         {
             var checkRole = await _roleManagerIdentity.FindByNameAsync(roleNameModel.Name);
-            if (checkRole is null)
-                await _roleReposatory.AddRole(roleNameModel.Name);
-            else
-                throw new ConflictException("the role is already excest");
+
+            if (checkRole is not null)
+                throw new ConflictException(RoleIsExist);
+
+            await _roleService.AddRole(roleNameModel.Name);
         }
 
-        public async Task Delete(string roleId)
+        public async Task DeleteRoleById(string roleId)
         {
             var role = await _roleManagerIdentity.FindByIdAsync(roleId);
-            if (role is not null)
-                await _roleReposatory.DeleteRole(role);
-            else
-                throw new NotFoundException("This role does not excest");
 
+            if (role is null)
+                throw new NotFoundException(RoleDoesnotExist);
+
+            await _roleService.DeleteRole(role);
         }
 
-        public async Task Update(string roleId, RoleNameModel role)
+        public async Task UpdateRole(string roleId, RoleNameModel role)
         {
-
             var isRole = await _roleManagerIdentity.FindByIdAsync(roleId);
-            if (isRole is not null)
-            {
-                isRole.Name = role.Name;
-              await _roleReposatory.UpdateRole(isRole);
 
-            }
-            else
-            throw new ConflictException("This role does not excest");
+            if (isRole is null)
+                throw new NotFoundException(RoleDoesnotExist);
+
+            isRole.Name = role.Name;
+            await _roleService.UpdateRole(isRole);
         }
 
-    
-    public async Task<IQueryable<string>> GetAll()
-    {
-        var result = (await _roleReposatory.GetRoles()).Select(a => a.Name);
-        return result;
+        public async Task<List<string?>> GetAllRoles() =>
+             (await _roleService.GetRoles()).Select(a => a.Name).ToList();
+
     }
-}
 }

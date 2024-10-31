@@ -11,7 +11,7 @@ namespace HMSBusinessLogic.ManagePermissions
             {
                  $"{Permission}.{model}.Create",
                  $"{Permission}.{model}.View",
-                 $"{Permission}.{model}.Delete",
+                 $"{Permission}.{model}.DeleteRoleById",
                  $"{Permission}.{model}.Edit",
             };
         }

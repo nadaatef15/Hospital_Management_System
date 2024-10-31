@@ -33,9 +33,8 @@ namespace HMSBusinessLogic.Filter
                 default:
                     statusCode = (int)HttpStatusCode.InternalServerError;
                     break;
-
-
             }
+
             var result = new ErrorResponse
             {
                 message = context.Exception.Message
@@ -47,7 +46,6 @@ namespace HMSBusinessLogic.Filter
                 DeclaredType = typeof(ErrorResponse),
             };
         }
-
 
         public class ErrorResponse
         {
