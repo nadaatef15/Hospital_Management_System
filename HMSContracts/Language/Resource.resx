@@ -192,25 +192,4 @@
   <data name="WrongPassword" xml:space="preserve">
     <value>The password is not Correct</value>
   </data>
-  <data name="DocHasSpecialty" xml:space="preserve">
-    <value>Doctor Already has this Specialty</value>
-  </data>
-  <data name="NameIsNotCorrect" xml:space="preserve">
-    <value>Enter a name for Specialty</value>
-  </data>
-  <data name="NoSpecialtyForDoctor" xml:space="preserve">
-    <value>There is no Specialties for the Doctor</value>
-  </data>
-  <data name="SpecialityIsExist" xml:space="preserve">
-    <value>This Speciality is Exist</value>
-  </data>
-  <data name="SpecialityIsNotExist" xml:space="preserve">
-    <value>this Speciality Is Not Exist</value>
-  </data>
-  <data name="IsNotADoctor" xml:space="preserve">
-    <value>This User is not a Doctor</value>
-  </data>
-  <data name="IsNotAPatient" xml:space="preserve">
-    <value>this user is not a patient</value>
-  </data>
 </root>

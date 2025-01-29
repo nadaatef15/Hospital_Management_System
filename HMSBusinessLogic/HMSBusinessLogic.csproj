@@ -32,8 +32,4 @@
     <ProjectReference Include="..\HMSContracts\HMSContracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Doctor\" />
-  </ItemGroup>
-
 </Project>

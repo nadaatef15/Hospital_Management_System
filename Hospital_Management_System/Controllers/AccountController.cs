@@ -28,7 +28,7 @@ namespace Hospital_Management_System.Controllers
             return Unauthorized();
         }
 
-        [HttpPost("RegisterDoctor")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromForm] UserModel userModel)
         {
             await _accountManager.Register(userModel);
@@ -36,8 +36,7 @@ namespace Hospital_Management_System.Controllers
         }
 
     
-        [HttpPatch]
-        [Route("ChangePassword/{Id}", Name = "ChangePassword")]
+        [HttpPatch("ChangePassword/{Id}", Name = "ChangePassword")]
         public async Task<IActionResult> ChangePassword(string userId , ChangePasswordModel model)
         {
             await _accountManager.ChangePassword(userId, model);

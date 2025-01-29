@@ -1,4 +1,5 @@
 ﻿using HMSBusinessLogic.Manager.IdentityManager;
+using HMSBusinessLogic.Resource;
 using HMSContracts.Model.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +12,38 @@ namespace Hospital_Management_System.Controllers
             roleManagerIdentity = _roleManagerIdentity;
         
 
-        [HttpPost("AddRole")]
-        public async Task<IActionResult> createRole(RoleNameModel roleName)
+        [HttpPost(Name = "AddRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateRole(RoleNameModel roleName)
         {
             await roleManagerIdentity.CreateRole(roleName);
             return Created();
         }
 
-        [HttpDelete]
-        [Route("{Id}", Name = "DeleteRoleById")]
-        public async Task<IActionResult> deleteRole(string roleId)
+        [HttpDelete("Id", Name = "DeleteRoleById")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
+        public async Task<IActionResult> DeleteRoleById(string roleId)
         {
             await roleManagerIdentity.DeleteRoleById(roleId);
-            return Ok();
+            return NoContent();
         }
 
-        [HttpGet("GetAllRoles")]
+        [HttpGet(Name = "GetAllRoles")]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
-
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllRoles()
         {
             var data = await roleManagerIdentity.GetAllRoles();
             return Ok(data);
         }
 
-        [HttpPut]
-        [Route("{Id}", Name = "UpdateRole")]
+        [HttpPut("roleId", Name = "UpdateRole")]
+        [ProducesResponseType(typeof(UserResource), StatusCodes.Status204NoContent)]
+
         public async Task<IActionResult> UpdateRoele(string roleId, RoleNameModel roleName)
         {
             await roleManagerIdentity.UpdateRole(roleId, roleName);
-            return Ok();
+            return NoContent();
         }
 
     }

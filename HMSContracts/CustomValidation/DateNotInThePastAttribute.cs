@@ -1,4 +1,4 @@
-﻿using HMSContracts.Model.Appointment;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace HMSContracts.CustomValidation
@@ -7,21 +7,15 @@ namespace HMSContracts.CustomValidation
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            // return base.IsValid(value, validationContext);
-            var model = (AppointmentModel)validationContext.ObjectInstance;
-
-            if (value is not DateOnly)
+            if (value is DateOnly date)
             {
+                if (date < DateOnly.FromDateTime(DateTime.Now))
+                    return new ValidationResult("The date must be today or a future date.");  
+            }
+            else
                 return new ValidationResult("Invalid date format.");
-            }
-
-            if (model.Date < DateOnly.FromDateTime(DateTime.Now))
-            {
-                return new ValidationResult("The date must be today or a future date.");
-
-            }
+           
             return ValidationResult.Success;
-
         }
     }
 }

@@ -12,8 +12,6 @@ using HMSDataAccess.Repo.Patient;
 using Microsoft.AspNetCore.Identity;
 using static HMSContracts.Infrastructure.Exceptions.TypesOfExceptions;
 using static HMSContracts.Language.Resource;
-using static HMSContracts.Constants.SysConstants;
-
 
 namespace HMSBusinessLogic.Manager.Patient
 {
@@ -93,20 +91,10 @@ namespace HMSBusinessLogic.Manager.Patient
 
         }
 
-        public async Task DeletePatient(string id)
-        {
-            var patient = await _patientRepo.GetPatientById(id) ??
-                  throw new NotFoundException(UseDoesnotExist);
-
-            var result = await _userManagerIdentity.IsInRoleAsync(patient, SysConstants.Patient);
-            
-            if (!result)
-                throw new NotFoundException(UseDoesnotExist);
-
+        public async Task DeletePatient(string id)=>
             await _userManager.DeleteUser(id);
-        }
-
         
+
         public async Task<PatientResource> GetPatientById(string id)
         {
             var patient = await _patientRepo.GetPatientById(id) ??

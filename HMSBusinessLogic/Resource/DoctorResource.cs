@@ -1,5 +1,4 @@
-﻿using HMSContracts.Model.Users;
-using static HMSContracts.Constants.SysEnums;
+﻿using static HMSContracts.Constants.SysEnums;
 
 namespace HMSBusinessLogic.Resource
 {
@@ -22,6 +21,5 @@ namespace HMSBusinessLogic.Resource
         public string Address { get; set; }
 
         public string Image { get; set; }
-        public List<SpecialtyResource> DoctorSpecialties { get; set; } = new List<SpecialtyResource>();
     }
 }

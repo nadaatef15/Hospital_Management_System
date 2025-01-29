@@ -70,8 +70,8 @@ namespace HMSUnitTest.Services
            .UseInMemoryDatabase(databaseName: "HMSDBTests")
            .Options;
 
-            var context = new HMSDBContext(options);
-            
+            using (var context = new HMSDBContext(options))
+            {
                 context.Patients.Add(new PatientEntity
                 {
                     Id = "Nada123abc",
@@ -103,13 +103,15 @@ namespace HMSUnitTest.Services
                 });
 
                 context.SaveChanges();
-            
+            }
 
             List<PatientEntity> patients = new List<PatientEntity>();
-            
+
+            using (var context = new HMSDBContext(options))
+            {
                 var repo = new PatientRepo(context);
                 patients = await repo.GetAllPatients();
-            
+            }
 
             patients.Should().NotBeNull();
             patients.Should().NotBeEmpty();

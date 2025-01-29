@@ -1,8 +1,9 @@
-﻿using HMSBusinessLogic.Manager.MedicalRecord;
+﻿using HMSBusinessLogic.Filter;
+using HMSBusinessLogic.Manager.MedicalRecord;
 using HMSBusinessLogic.Resource;
 using HMSContracts.Model.MedicalRecord;
 using Microsoft.AspNetCore.Mvc;
-
+using static HMSContracts.Constants.SysConstants;
 namespace Hospital_Management_System.Controllers
 {
     public class MedicalRecordController : BaseController
@@ -13,6 +14,7 @@ namespace Hospital_Management_System.Controllers
 
 
         [HttpPost(Name = "CreateMedicalRecord")]
+        [PermissionRequirement($"{Permission}.{MedicalRecord}.{Create}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateMedicalRecord([FromBody] MedicalRecordModel model)
         {
@@ -21,6 +23,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpDelete("Id", Name = "DeleteMedicalRecord")]
+        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{Delete}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteMedicalRecord(int id)
         {
@@ -29,6 +32,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpPost("Id", Name = "UpdateMedicalRecord")]
+        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{Edit}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateMedicalRecord(int id ,[FromBody] MedicalRecordModel model)
         {
@@ -37,6 +41,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpGet("Id", Name = "GetMedicalRecordById")]
+        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{View}")]
         [ProducesResponseType(typeof(MedicalRecordResource), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMedicalRecordById(int id)
         {
@@ -45,10 +50,11 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpGet("GetAllMedicalRecords")]
+        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{View}")]
         [ProducesResponseType(typeof(List<MedicalRecordResource>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllMedicalRecords()
         {
-            var medicalRecords = _medicalRecordManager.GetAllMedicalRecords();
+            var medicalRecords =await _medicalRecordManager.GetAllMedicalRecords();
             return Ok(medicalRecords);
         }
     }

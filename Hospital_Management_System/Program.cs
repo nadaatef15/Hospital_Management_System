@@ -11,20 +11,20 @@ using HMSBusinessLogic.Manager.Patient;
 using HMSBusinessLogic.Manager.PermissionManager;
 using HMSBusinessLogic.Manager.Pharmacist;
 using HMSBusinessLogic.Manager.Receptionist;
-using HMSBusinessLogic.Manager.Specialty;
 using HMSBusinessLogic.Seeds;
 using HMSBusinessLogic.Services.Appointment;
+using HMSBusinessLogic.Services.Doctor;
 using HMSBusinessLogic.Services.GeneralServices;
 using HMSBusinessLogic.Services.MedicalRecord;
 using HMSBusinessLogic.Services.PatientService;
 using HMSBusinessLogic.Services.user;
 using HMSBusinessLogic.Validators;
 using HMSContracts;
+using HMSContracts.Infrastructure.Exceptions;
 using HMSContracts.Model.Appointment;
+using HMSContracts.Model.DoctorSchadule;
 using HMSContracts.Model.Identity;
 using HMSContracts.Model.MedicalRecord;
-using HMSContracts.Model.Specialty;
-using HMSContracts.Model.Users;
 using HMSDataAccess.DBContext;
 using HMSDataAccess.Entity;
 using HMSDataAccess.Repo.Appointment;
@@ -34,7 +34,6 @@ using HMSDataAccess.Repo.MedicalRecord;
 using HMSDataAccess.Repo.Patient;
 using HMSDataAccess.Repo.Pharmacist;
 using HMSDataAccess.Repo.Receptionist;
-using HMSDataAccess.Repo.Specialty;
 using Hospital_Management_System.Refliction;
 using Microsoft.AspNetCore.Identity;
 using System.Globalization;
@@ -79,16 +78,7 @@ namespace Hospital_Management_System
             builder.Services.AuthenticationService(builder.Configuration);
             builder.Services.SwaggerConfiguration();
             builder.Services.AddLocalization();
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("myPolicy", policy =>
-                {
-                    policy.AllowAnyMethod();
-                    policy.AllowAnyOrigin();
-                    policy.AllowAnyHeader();
-                    
-                });
-            });
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -113,23 +103,20 @@ namespace Hospital_Management_System
             builder.Services.AddScoped<IAppointmentManager, AppointmentManager>();
             builder.Services.AddScoped<IPharmacistRepo, PharmacistRepo>();
             builder.Services.AddScoped<IPharmacistManager, PharmacistManager>();
-            builder.Services.AddScoped<ISpecialtiesManager, SpecialtiesManager>();
-            builder.Services.AddScoped<ISpecialtyRepo, SpecialtyRepo>();
-            builder.Services.AddScoped<IDoctorSpecialtiesRepo, DoctorSpecialtiesRepo>();
-            builder.Services.AddScoped<IDoctorSpecialtiesManager, DoctorSpecialtiesManager>();
+            builder.Services.AddScoped<IDoctorScheduleManager, DoctorScheduleManager>();
+            builder.Services.AddScoped<IDoctorScheduleRepo, DoctorScheduleRepo>();
 
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<IMedicalRecordService, MedicalRecordService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPatientService , PatientService>();
+            builder.Services.AddScoped<IDoctorScheduleService , DoctorScheduleService>();
 
             builder.Services.AddScoped<IValidator<UserModel>, UserValidator>();
             builder.Services.AddScoped<IValidator<MedicalRecordModel>, MedicalRecordValidator>();
             builder.Services.AddScoped<IValidator<AppointmentModel>, AppointmentValidator>();
-            builder.Services.AddScoped<IValidator<SpecialtyModel>, SpecialtyValidation>();
-            builder.Services.AddScoped<IValidator<DoctorSpecialtyModel>, DoctorSpecialtyValidation>();
-            builder.Services.AddScoped<IValidator<DoctorModel>, DoctorValidation>();
+            builder.Services.AddScoped<IValidator<DoctorScheduleModel>, DoctorScheduleValidation>();
 
 
 
@@ -156,8 +143,7 @@ namespace Hospital_Management_System
                 app.UseSwaggerUI();
             }
 
-            //  app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseCors("myPolicy");
+          //  app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();

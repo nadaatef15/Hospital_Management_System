@@ -1,19 +1,20 @@
 ﻿using HMSContracts.CustomValidation;
+using HMSContracts.Model.DoctorSchadule;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using static HMSContracts.Constants.SysEnums;
 
 namespace HMSContracts.Model.Appointment
 {
-    public class AppointmentModel
+    public class AppointmentModel :ITimeRange
     {
-        public int Id { get; set; }
+        public int Id {  get; set; }
         [Required]
         [DateNotInThePast]
-        public DateOnly Date { get; set; }
+        public DateOnly Date {  get; set; }
 
-        [Required(ErrorMessage = "the format is HH:MM:SS")]
-        [SwaggerSchema(Format = "time", Description = "Time in HH:mm:ss format")]
+        [Required(ErrorMessage ="the format is HH:MM:SS")]
+        [SwaggerSchema(Format = "time", Description = "Time in HH:mm:ss format" )]
         public TimeOnly StartTime { get; set; }
 
         [Required(ErrorMessage = "the format is HH:MM:SS")]

@@ -12,14 +12,18 @@ namespace Hospital_Management_System.Controllers
             permissionManager = _permissionManager;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetAllPermissions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
         public async Task<IActionResult> GetAllPermissions(string roleId)
         {
                var result = await permissionManager.GetpermissionsOfRole(roleId);
                 return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("roleId" , Name = "EditPermissionsForRole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
         public async Task <IActionResult> EditPermissionsForRole(string roleId, List<PermissionModel> permissionModels)
         {
             await permissionManager.EditPermissionsforRole(permissionModels, roleId);

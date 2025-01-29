@@ -11,32 +11,33 @@ namespace Hospital_Management_System.Controllers
             userManager = _userManager;
         
 
-        [HttpPost]
-        [Route("{Id}", Name = "AssignRolesToUser")]
-        public async Task<IActionResult> AssignRolesToUser(string userId, List<string> roleName)
+        [HttpPost("Id", Name = "AssignRolesToUser")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+
+        public async Task<IActionResult> AssignRolesToUser(string id, List<string> roleName)
         {
-            await userManager.AssignRolesToUser(userId, roleName);
-            return Ok();
+            await userManager.AssignRolesToUser(id, roleName);
+            return Created();
         }
 
-        [HttpGet]
-        [Route("{Id}", Name = "GetUserById")]
+        [HttpGet("Id", Name = "GetUserById")]
         [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
-
-        public async Task<IActionResult> GetUserById(string userId)
+        public async Task<IActionResult> GetUserById(string id)
         {
-            var user = await userManager.GetUserById(userId);
+            var user = await userManager.GetUserById(id);
             return Ok(user);
         }
 
-        [HttpDelete("id", Name = "DeleteUserById")]
-        public async Task<IActionResult> DeleteUserById(string UserId)
+        [HttpDelete("Id", Name = "DeleteUserById")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
+        public async Task<IActionResult> DeleteUserById(string id)
         {
-            await userManager.DeleteUser(UserId);
+            await userManager.DeleteUser(id);
             return NoContent();
         }
 
-        [HttpGet("AllUsers")]
+        [HttpGet(Name ="GetAllUser")]
         [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
 
         public async Task<IActionResult> GetAllUser()

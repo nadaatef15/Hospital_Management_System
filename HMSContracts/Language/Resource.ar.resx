@@ -192,25 +192,4 @@
   <data name="WrongPassword" xml:space="preserve">
     <value>كلمة المرور غير صحيحة</value>
   </data>
-  <data name="DocHasSpecialty" xml:space="preserve">
-    <value>هذا الطبيب لديه هذا التخصص</value>
-  </data>
-  <data name="NameIsNotCorrect" xml:space="preserve">
-    <value>ادخل اسم التخصص</value>
-  </data>
-  <data name="NoSpecialtyForDoctor" xml:space="preserve">
-    <value>لا يوجد تخصص لهذا الطبيب</value>
-  </data>
-  <data name="SpecialityIsExist" xml:space="preserve">
-    <value>هذا التخصص موجود</value>
-  </data>
-  <data name="SpecialityIsNotExist" xml:space="preserve">
-    <value>هذا التخصص غير موجود</value>
-  </data>
-  <data name="IsNotADoctor" xml:space="preserve">
-    <value>هذا المستخدم ليس طبيب</value>
-  </data>
-  <data name="IsNotAPatient" xml:space="preserve">
-    <value>هذا المستخدم ليس مريض</value>
-  </data>
 </root>

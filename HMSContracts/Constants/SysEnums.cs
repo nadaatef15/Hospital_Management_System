@@ -16,7 +16,9 @@
 
         public enum model
         {
-            User,Medicine,Payment,Specialties,Test,Invoice,Appointment,Prescription,Diagnoses,MedicalRecord
+            Medicine, Payment, Specialties, Test, Invoice, Appointment
+            , Prescription, Diagnoses, MedicalRecord, Patient, Doctor
+            , DoctorSchedule, DoctorSpecialties, Receptionist, Pharmacist, LabTechnician,
         }
 
         public enum permissionType

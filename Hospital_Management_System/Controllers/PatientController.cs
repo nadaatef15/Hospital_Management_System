@@ -17,7 +17,6 @@ namespace Hospital_Management_System.Controllers
 
         [HttpPost("RegisterPatient")]
         [PermissionRequirement($"{Permission}.{Patient}.{Create}")]
-        [ProducesResponseType(typeof(DoctorResource), StatusCodes.Status201Created)]
         public async Task<IActionResult> RegisterPatient([FromForm] PatientModel user)
         {
           var patient= await _patientsManager.RegisterPatient(user);
@@ -25,9 +24,8 @@ namespace Hospital_Management_System.Controllers
         }
 
 
-        [HttpPut("id" , Name = "UpdatePatient")]
+        [HttpPut("Id" , Name = "UpdatePatient")]
         [PermissionRequirement($"{Permission}.{Patient}.{Edit}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdatePatient(string id, [FromForm] PatientModel user)
         {
             await _patientsManager.UpdatePatient(id, user);
@@ -35,9 +33,8 @@ namespace Hospital_Management_System.Controllers
         }
 
 
-        [HttpDelete("id", Name = "DeletePatientById")]
+        [HttpDelete("Id", Name = "DeletePatientById")]
         [PermissionRequirement($"{Permission}.{Patient}.{Delete}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeletePatientById(string id)
         {
             await _patientsManager.DeletePatient(id);
@@ -46,12 +43,12 @@ namespace Hospital_Management_System.Controllers
 
 
         [HttpGet("Id", Name = "GetPatientById")]
-        [ProducesResponseType(typeof(PatientResource), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
         [PermissionRequirement($"{Permission}.{Patient}.{View}")]
         public async Task<IActionResult> GetPatientById(string id)
         {
-            var patientResource = await _patientsManager.GetPatientById(id);
-            return Ok(patientResource);
+            var result = await _patientsManager.GetPatientById(id);
+            return Ok(result);
         }
 
         [HttpGet("GetAllPatients")]

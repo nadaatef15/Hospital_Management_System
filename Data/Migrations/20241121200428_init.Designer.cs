@@ -67,7 +67,7 @@ namespace HMSDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeOnly>("StartTime")
+                    b.Property<TimeOnly>("SartTime")
                         .HasColumnType("time");
 
                     b.Property<int>("Status")
@@ -161,7 +161,7 @@ namespace HMSDataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<TimeOnly>("StartTime")
+                    b.Property<TimeOnly>("SartTime")
                         .HasColumnType("time");
 
                     b.Property<string>("UpdatedBy")

@@ -14,7 +14,8 @@ namespace HMSBusinessLogic.Manager.Appointment
         Task CreateAppointment(AppointmentModel model);
         Task DeleteAppointment(int id);
         Task<AppointmentResource> GetAppointmentById(int id);
-        Task<List<AppointmentResource>> GetAllAppointments();
+        Task<List<AppointmentResource>> GetAllAppointmentsForDoctor(string docId);
+        Task<List<AppointmentResource>> GetAllAppointmentsForPatient(string patientId);
     }
     public class AppointmentManager : IAppointmentManager
     {
@@ -38,6 +39,25 @@ namespace HMSBusinessLogic.Manager.Appointment
 
             var appointment = model.ToEntity();
 
+            var appointmentsInSameDate = _appointmentRepo.AllAppointmentsForDoctorInSpecificDate(appointment);
+
+            var docScheduleInSameDate = await _appointmentRepo.docScheduleWithSameDate(appointment);
+
+         
+                if (appointment.StartTime < docScheduleInSameDate.StartTime ||
+                    appointment.EndTime > docScheduleInSameDate.EndTime)
+                {
+                    throw new ConflictException("The appointment time is outside the Doctor schedule");
+                }
+
+            foreach (var appoint in appointmentsInSameDate)
+            {
+                if (appointment.StartTime < appoint.EndTime && appointment.EndTime > appoint.StartTime)
+                {
+                    throw new ConflictException("The appointment time conflicts with an existing appointment");
+                }
+            }
+
             await _appointmentRepo.CreateAppointment(appointment);
         }
 
@@ -56,12 +76,30 @@ namespace HMSBusinessLogic.Manager.Appointment
 
             await _validator.ValidateAndThrowAsync(model);
 
-            var appointmentEntity = await _appointmentRepo.GetAppointmentById(id) ??
-                   throw new NotFoundException(appointmentDoesnotExist);
+            var appointment = await _appointmentRepo.GetAppointmentById(id) ??
+                   throw new NotFoundException(appointmentDoesnotExist); 
 
-            _appointmentUpdateService.SetValues(appointmentEntity, model);
+            _appointmentUpdateService.SetValues(appointment, model);
 
-            await _appointmentRepo.saveChanges();
+            var appointmentsInSameDate = _appointmentRepo.AllAppointmentsForDoctorInSpecificDate(appointment);
+
+            var docScheduleInSameDate = await _appointmentRepo.docScheduleWithSameDate(appointment);
+
+
+            if (appointment.StartTime < docScheduleInSameDate.StartTime ||
+                appointment.EndTime > docScheduleInSameDate.EndTime)
+            {
+                throw new ConflictException("The appointment time is outside the Doctor schedule");
+            }
+
+            foreach (var appoint in appointmentsInSameDate)
+            {
+                if (appointment.StartTime < appoint.EndTime && appointment.EndTime > appoint.StartTime)
+                {
+                    throw new ConflictException("The appointment time conflicts with an existing appointment");
+                }
+            }
+            _appointmentRepo.UpdateAppointment(appointment);
         }
 
         public async Task<AppointmentResource> GetAppointmentById(int id)
@@ -72,8 +110,12 @@ namespace HMSBusinessLogic.Manager.Appointment
             return appointment.ToResource();
         }
 
-        public async Task<List<AppointmentResource>> GetAllAppointments() =>
-          (await _appointmentRepo.GetAllAppointments()).Select(a => a.ToResource()).ToList();
+        public async Task<List<AppointmentResource>> GetAllAppointmentsForDoctor(string docId) =>
+          (await _appointmentRepo.GetAllAppointmentsForDoctor(docId)).Select(a => a.ToResource()).ToList();
+
+
+        public async Task<List<AppointmentResource>> GetAllAppointmentsForPatient(string patientId) =>
+          (await _appointmentRepo.GetAllAppointmentsForPatient(patientId)).Select(a => a.ToResource()).ToList();
 
     }
 }

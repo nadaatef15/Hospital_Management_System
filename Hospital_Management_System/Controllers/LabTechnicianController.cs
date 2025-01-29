@@ -12,41 +12,39 @@ namespace Hospital_Management_System.Controllers
             _labTechnicianManager = labTechnicianManager;
         
 
-        [HttpPost]
-        [Route("RegisterLabTech")]
+        [HttpPost(Name = "RegisterLabTech")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
         public async Task<IActionResult> RegisterLabtech([FromForm] labTechnicianModel user)
         {
             var labTech= await _labTechnicianManager.RegisterLabTech(user);
             return CreatedAtAction(nameof(GetLabtechById), new { id = labTech.Id }, labTech);
         }
 
-        [HttpPut]
-        [Route("{Id}", Name = "UpdateLabtech")]
-
+        [HttpPut("Id", Name = "UpdateLabtech")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateLabtech(string id, [FromForm] labTechnicianModel user)
         {
             await _labTechnicianManager.UpdateLabTech(id, user);
-            return Ok();
+            return NoContent();
         }
 
-        [HttpGet]
-        [Route("{Id}", Name = "UpdateLabtech")]
+        [HttpGet("Id", Name = "GetLabtechById")]
         [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
 
         public async Task<IActionResult> GetLabtechById(string id)
         {
-            var result = await _labTechnicianManager.GetLabTechById(id);
-            return Ok(result);
+            var labTech = await _labTechnicianManager.GetLabTechById(id);
+            return Ok(labTech);
         }
 
-        [HttpGet]
-        [Route("GetAllLabtech")]
+        [HttpGet(Name = "GetAllLabtech")]
         [ProducesResponseType(typeof(List<UserResource>), StatusCodes.Status200OK)]
 
         public async Task<IActionResult> GetAllLabtech()
         {
-            var result = await _labTechnicianManager.GetAllLabTechs();
-            return Ok(result);
+            var labTechs = await _labTechnicianManager.GetAllLabTechs();
+            return Ok(labTechs);
         }
     }
 }

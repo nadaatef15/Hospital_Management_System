@@ -1,8 +1,9 @@
-﻿using HMSBusinessLogic.Manager.Pharmacist;
+﻿using HMSBusinessLogic.Filter;
+using HMSBusinessLogic.Manager.Pharmacist;
 using HMSBusinessLogic.Resource;
 using HMSContracts.Model.Users;
 using Microsoft.AspNetCore.Mvc;
-
+using static HMSContracts.Constants.SysConstants;
 namespace Hospital_Management_System.Controllers
 {
     public class PharmacistController : BaseController
@@ -13,22 +14,26 @@ namespace Hospital_Management_System.Controllers
         
 
         [HttpPost("RegisterPharmacist")]
+        [PermissionRequirement($"{Permission}.{Pharmacist}.{Create}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> RegisterPharmacist([FromForm] pharmacistModel user)
         {
            var pharmacist= await _PharmacistManager.RegisterPharmacist(user);
             return CreatedAtAction(nameof(GetPharmacistById) , new {id= pharmacist.Id} , pharmacist);
         }
 
-        [HttpPut]
-        [Route("{Id}", Name = "UpdatePharmacist")]
+        [HttpPut("Id", Name = "UpdatePharmacist")]
+        [PermissionRequirement($"{Permission}.{Pharmacist}.{Edit}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
         public async Task<IActionResult> UpdatePharmacist(string id, [FromForm] pharmacistModel user)
         {
             await _PharmacistManager.UpdatePharmacist(id, user);
-            return Ok();
+            return NoContent();
         }
 
-        [HttpGet]
-        [Route("{Id}", Name = "GetPharmacistById")]
+        [HttpGet("Id", Name = "GetPharmacistById")]
+        [PermissionRequirement($"{Permission}.{Pharmacist}.{View}")]
         [ProducesResponseType(typeof(UserResource), StatusCodes.Status200OK)]
 
         public async Task<IActionResult> GetPharmacistById(string id)
@@ -37,9 +42,9 @@ namespace Hospital_Management_System.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAllPharmacist")]
+        [HttpGet(Name = "GetAllPharmacist")]
+        [PermissionRequirement($"{Permission}.{Pharmacist}.{View}")]
         [ProducesResponseType(typeof(List<UserResource>), StatusCodes.Status200OK)]
-
         public async Task<IActionResult> GetAllPharmacist()
         {
             var result = await _PharmacistManager.GetAllPharmacist();

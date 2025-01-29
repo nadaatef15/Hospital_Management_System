@@ -22,9 +22,7 @@ namespace HMSBusinessLogic.Manager.PermissionManager
 
         public async Task<List<PermissionModel>> GetpermissionsOfRole(string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(roleId);
-
-            if (role is null)
+            var role = await _roleManager.FindByIdAsync(roleId) ??
                 throw new NotFoundException(RoleDoesnotExist);
 
             var permissionModels = new List<PermissionModel>();

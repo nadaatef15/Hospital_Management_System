@@ -23,7 +23,7 @@ namespace HMSDataAccess.Repo.MedicalRecord
 
         public async Task CreateMedicalRecord(MedicalRecordEntity model)
         {
-            await _dbContext.MedicalRecord.AddAsync(model);
+            await _dbContext.AddAsync(model);
             await _dbContext.SaveChangesAsync();
         }
 

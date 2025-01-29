@@ -1,4 +1,5 @@
-﻿using HMSContracts.Model.Appointment;
+﻿
+using HMSContracts.Model.DoctorSchadule;
 using System.ComponentModel.DataAnnotations;
 
 namespace HMSContracts.CustomValidation
@@ -7,12 +8,12 @@ namespace HMSContracts.CustomValidation
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            // return base.IsValid(value, validationContext);
-            var model = (AppointmentModel)validationContext.ObjectInstance;
-
-            if (model.EndTime < model.StartTime)
+            if (validationContext.ObjectInstance is ITimeRange timeRange)
             {
-                return new ValidationResult("EndTime must be after StartTime.");
+                if (timeRange.EndTime <= timeRange.StartTime)
+                {
+                    return new ValidationResult("EndTime must be after StartTime.");
+                }
             }
 
             return ValidationResult.Success;
