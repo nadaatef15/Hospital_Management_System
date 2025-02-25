@@ -13,7 +13,7 @@
             F,
             M
         }
-
+         
         public enum model
         {
             Medicine, Payment, Specialties, Test, Invoice, Appointment

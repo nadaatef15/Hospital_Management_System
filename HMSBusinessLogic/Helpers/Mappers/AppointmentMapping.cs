@@ -18,15 +18,15 @@ namespace HMSBusinessLogic.Helpers.Mappers
             PatientId = model.PatientId,
         };
 
-        public static AppointmentResource ToResource(this AppointmentEntity model) => new()
+        public static AppointmentResource ToResource(this AppointmentEntity entity) => new()
         {
-            Date = model.Date,
-            SartTime = model.StartTime,
-            EndTime = model.EndTime,
-            ReasonOfVisit = model.ReasonOfVisit,
-            DoctorId = model.DoctorId,
-            PatientId = model.PatientId,
-            Status = model.Status == 0 ? Status.complete : Status.incomplete,
+            Date = entity.Date,
+            SartTime = entity.StartTime,
+            EndTime = entity.EndTime,
+            ReasonOfVisit = entity.ReasonOfVisit,
+            Doctor = entity.Doctor?.ToResource(),
+            Patient = entity.Patient?.ToPatientResource(),
+            Status = entity.Status,
         };
 
     }

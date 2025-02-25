@@ -25,7 +25,6 @@ namespace HMSBusinessLogic.Validators
         public async Task<bool> EmailNotTakenBefore(UserModel userModel, CancellationToken cancellation)
         {
             var user = await _userManager.FindByEmailAsync(userModel.Email);
-
             return user is null || user.Id == userModel.Id;
         }
 

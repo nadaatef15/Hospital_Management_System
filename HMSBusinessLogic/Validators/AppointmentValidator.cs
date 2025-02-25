@@ -23,37 +23,45 @@ namespace HMSBusinessLogic.Validators
                 .WithMessage(UseDoesnotExist);
 
             RuleFor(x => x)
-                .MustAsync(IsDoctorHasScheduleInTheDateOfAppointment)
-                .WithMessage("Doctor Does Not have Schedule this Day");
+                .MustAsync(IsAppointmentTimeAvailable)
+                .WithMessage("There is another appointment in this time ");
+
+
+            RuleFor(x => x)
+                .MustAsync(IsAppointmentTimeWithInSchedule)
+                .WithMessage("Appointment Time is not in a Schedule");
         }
 
+        public async Task<bool> IsDoctorExist(AppointmentModel model, CancellationToken cancellation)=>
+             await _dbcontext.Doctors.AnyAsync(a => a.Id == model.DoctorId);
+           
+        
 
-        public async Task<bool> IsDoctorExist(AppointmentModel model, CancellationToken cancellation)
+        public async Task<bool> IsPatientExist(AppointmentModel model, CancellationToken cancellation)=>
+             await _dbcontext.Patients.AnyAsync(a => a.Id == model.PatientId);
+
+
+        public async Task<bool> IsAppointmentTimeAvailable(AppointmentModel model, CancellationToken cancellation)
         {
-            var doctor = await _dbcontext.Doctors.FirstOrDefaultAsync(a => a.Id == model.DoctorId);
-           if( doctor is null) 
-                return false;
-            return true;
+            return !await _dbcontext.Appointments
+                .AnyAsync(a => a.Date == model.Date &&
+                               a.DoctorId == model.DoctorId &&
+                               a.Id != model.Id && 
+                               (
+                                   (a.StartTime <= model.StartTime && model.StartTime < a.EndTime) ||
+                                   (a.StartTime < model.EndTime && model.EndTime <= a.EndTime) 
+                               ));
         }
 
-        public async Task<bool> IsPatientExist(AppointmentModel model, CancellationToken cancellation)
+        public async Task<bool> IsAppointmentTimeWithInSchedule(AppointmentModel model, CancellationToken cancellationToken)
         {
-            var patient = await _dbcontext.Patients.FirstOrDefaultAsync(a => a.Id == model.PatientId);
-            if( patient is null)
-                return false;
-            return true;
+            return await _dbcontext.DoctorSchedule
+                .AnyAsync(a => a.DoctorId == model.DoctorId &&
+                               a.Date == model.Date &&
+                                   (a.StartTime <= model.StartTime && model.StartTime < a.EndTime) &&
+                                   (a.StartTime < model.EndTime && model.EndTime <= a.EndTime));
         }
 
-        public async Task<bool> IsDoctorHasScheduleInTheDateOfAppointment(AppointmentModel model, CancellationToken cancellation)
-        {
-            var docScheduleWithSameDate = await _dbcontext.DoctorSchedule.Where(a => a.Date == model.Date)
-                      .FirstOrDefaultAsync(a => a.DoctorId == model.DoctorId);
-
-            if (docScheduleWithSameDate is null)
-                return false;
-
-            return true;
-        }
 
 
     }

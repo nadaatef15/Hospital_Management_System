@@ -8,10 +8,10 @@ namespace HMSContracts.Model.Appointment
 {
     public class AppointmentModel :ITimeRange
     {
-        public int Id {  get; set; }
+        public int Id { get; set; }
         [Required]
         [DateNotInThePast]
-        public DateOnly Date {  get; set; }
+        public DateOnly Date { get; set; }
 
         [Required(ErrorMessage ="the format is HH:MM:SS")]
         [SwaggerSchema(Format = "time", Description = "Time in HH:mm:ss format" )]

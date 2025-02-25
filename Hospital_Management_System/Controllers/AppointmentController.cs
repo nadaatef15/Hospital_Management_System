@@ -2,6 +2,7 @@
 using HMSBusinessLogic.Manager.Appointment;
 using HMSBusinessLogic.Resource;
 using HMSContracts.Model.Appointment;
+using HMSContracts.Model.DoctorSchadule;
 using Microsoft.AspNetCore.Mvc;
 using static HMSContracts.Constants.SysConstants;
 
@@ -10,12 +11,12 @@ namespace Hospital_Management_System.Controllers
     public class AppointmentController : BaseController
     {
         private readonly IAppointmentManager _appointmentManager;
-        public AppointmentController(IAppointmentManager appointmentManager)=>
+        public AppointmentController(IAppointmentManager appointmentManager) =>
             _appointmentManager = appointmentManager;
-        
+
 
         [HttpPost(Name = "CreateAppointment")]
-        [PermissionRequirement($"{Permission}.{Appointment}.{Create}")]
+        //[PermissionRequirement($"{Permission}.{Appointment}.{Create}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateAppointment([FromBody]AppointmentModel model)
         {
@@ -25,7 +26,7 @@ namespace Hospital_Management_System.Controllers
 
 
         [HttpDelete("Id", Name = "DeleteAppointment")]
-        [PermissionRequirement($"{Permission}.{Appointment}.{Delete}")]
+        //[PermissionRequirement($"{Permission}.{Appointment}.{Delete}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteAppointment(int id)
         {
@@ -34,7 +35,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpGet("appointmentId", Name = "GetAppointmentById")]
-        [PermissionRequirement($"{Permission}.{Appointment}.{View}")]
+       // [PermissionRequirement($"{Permission}.{Appointment}.{View}")]
         [ProducesResponseType(typeof(AppointmentResource), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAppointmentById(int appointmentId)
         {
@@ -42,8 +43,8 @@ namespace Hospital_Management_System.Controllers
             return Ok(appointment);
         }
 
-        [HttpGet("docId", Name = "GetAllAppointmentsForDoctor")]
-        [PermissionRequirement($"{Permission}.{Appointment}.{View}")]
+        [HttpGet("doctorId", Name = "GetAllAppointments")]
+        //[PermissionRequirement($"{Permission}.{Appointment}.{View}")]
         [ProducesResponseType(typeof(List<AppointmentResource>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAppointmentsForDoctor(string docId)
         {
@@ -53,7 +54,7 @@ namespace Hospital_Management_System.Controllers
 
 
         [HttpGet("patientId", Name = "GetAllAppointmentForPatient")]
-        [PermissionRequirement($"{Permission}.{Appointment}.{View}")]
+        //[PermissionRequirement($"{Permission}.{Appointment}.{View}")]
         [ProducesResponseType(typeof(List<AppointmentResource>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAppointmentForPatient(string patientId)
         {
@@ -61,7 +62,14 @@ namespace Hospital_Management_System.Controllers
             return Ok(appointment);
         }
 
-
+        [HttpPut("Id", Name = "UpdateAppointment")]
+        //  [PermissionRequirement($"{Permission}.{Appointment}.{Edit}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> UpdateAppointment(int Id, AppointmentModel model)
+        {
+            await _appointmentManager.UpdateAppointment(Id, model);
+            return NoContent();
+        }
 
     }
 }

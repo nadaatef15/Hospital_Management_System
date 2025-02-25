@@ -23,7 +23,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpDelete("Id", Name = "DeleteMedicalRecord")]
-        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{Delete}")]
+        [PermissionRequirement($"{Permission}.{MedicalRecord}.{Delete}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteMedicalRecord(int id)
         {
@@ -32,7 +32,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpPost("Id", Name = "UpdateMedicalRecord")]
-        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{Edit}")]
+        [PermissionRequirement($"{Permission}.{MedicalRecord}.{Edit}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateMedicalRecord(int id ,[FromBody] MedicalRecordModel model)
         {
@@ -41,7 +41,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpGet("Id", Name = "GetMedicalRecordById")]
-        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{View}")]
+        [PermissionRequirement($"{Permission}.{MedicalRecord}.{View}")]
         [ProducesResponseType(typeof(MedicalRecordResource), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMedicalRecordById(int id)
         {
@@ -50,7 +50,7 @@ namespace Hospital_Management_System.Controllers
         }
 
         [HttpGet("GetAllMedicalRecords")]
-        [PermissionRequirement($"{Permission}.{DoctorSchedule}.{View}")]
+        [PermissionRequirement($"{Permission}.{MedicalRecord}.{View}")]
         [ProducesResponseType(typeof(List<MedicalRecordResource>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllMedicalRecords()
         {

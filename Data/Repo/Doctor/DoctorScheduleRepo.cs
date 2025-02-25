@@ -7,7 +7,7 @@ namespace HMSDataAccess.Repo.Doctor
     public interface IDoctorScheduleRepo
     {
         Task CreateSchedule(DoctorScheduleEntity entity);
-        List<DoctorScheduleEntity> GetSchedulesForDoctor(string docId, DateOnly? dateFrom, DateOnly? dateTo);
+        Task<List<DoctorScheduleEntity>> GetDoctorSchedules(string docId, DateOnly? dateFrom, DateOnly? dateTo);
         Task UpdateDoctorSchedule(DoctorScheduleEntity doctorSpecialties);
         Task<DoctorScheduleEntity?> GetDoctorScheduleByScheduleId(int id);
         Task DeleteSchedule(DoctorScheduleEntity docSchedule);
@@ -28,12 +28,12 @@ namespace HMSDataAccess.Repo.Doctor
         public async Task<DoctorEntity?> GetDoctorById(string docId) =>
             await _dbContext.Doctors.FindAsync(docId);
 
-        public List<DoctorScheduleEntity> GetSchedulesForDoctor(string docId, DateOnly? dateFrom, DateOnly? dateTo)=>
-                _dbContext.DoctorSchedule
+        public async Task< List<DoctorScheduleEntity>> GetDoctorSchedules(string docId, DateOnly? dateFrom, DateOnly? dateTo)=>
+               await _dbContext.DoctorSchedule
                 .Where(schedule => schedule.DoctorId == docId && 
                 (dateFrom == null || dateFrom <= schedule.Date ) && ( dateTo == null || dateTo >= schedule.Date))
                 .Include(a=>a.Doctor)
-                .ToList();
+                .ToListAsync();
 
         public async Task<DoctorScheduleEntity?> GetDoctorScheduleByScheduleId(int id) =>
             await _dbContext.DoctorSchedule.FindAsync(id);

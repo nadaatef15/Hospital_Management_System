@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
 
-        public List<DoctorSpecialties> doctorSpecialties = new List<DoctorSpecialties>();
+        public List<DoctorSpecialties> DoctorSpecialties = new List<DoctorSpecialties>();
     }
 }

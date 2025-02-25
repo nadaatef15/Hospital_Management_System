@@ -67,7 +67,7 @@ namespace HMSDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeOnly>("SartTime")
+                    b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
 
                     b.Property<int>("Status")

@@ -180,11 +180,13 @@ namespace HMSDataAccess.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnOrder(1);
 
-                    b.Property<int>("SpecialtiesId")
+                    b.Property<int>("SpecialtyId")
                         .HasColumnType("int")
                         .HasColumnOrder(2);
 
-                    b.HasKey("DoctorId", "SpecialtiesId");
+                    b.HasKey("DoctorId", "SpecialtyId");
+
+                    b.HasIndex("SpecialtyId");
 
                     b.ToTable("DoctorSpecialties");
                 });
@@ -970,6 +972,25 @@ namespace HMSDataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("HMSDataAccess.Entity.DoctorSpecialties", b =>
+                {
+                    b.HasOne("HMSDataAccess.Entity.DoctorEntity", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HMSDataAccess.Entity.SpecialtyEntity", "Specialty")
+                        .WithMany()
+                        .HasForeignKey("SpecialtyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Specialty");
                 });
 
             modelBuilder.Entity("HMSDataAccess.Entity.InvoiceEntity", b =>

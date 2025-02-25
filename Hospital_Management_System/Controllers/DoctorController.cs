@@ -35,7 +35,6 @@ namespace Hospital_Management_System.Controllers
         [HttpGet("Id", Name = "GetDoctorById")]
         [PermissionRequirement($"{Permission}.{Doctor}.{View}")]
         [ProducesResponseType(typeof(DoctorResource), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetDoctorById(string id)
         {
             var doctor = await _doctorManager.GetDoctorById(id);
@@ -51,5 +50,12 @@ namespace Hospital_Management_System.Controllers
             return Ok(doctor);
         }
 
+        [HttpDelete("Id",Name ="DeleteDoctor")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteDoctor(string docId)
+        {
+            await _doctorManager.DeleteDoctor(docId);
+            return NoContent();
+        }
     }
 }

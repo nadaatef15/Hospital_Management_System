@@ -1,7 +1,9 @@
 ﻿using HMSDataAccess.DBContext;
 using HMSDataAccess.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using static HMSContracts.Constants.SysEnums;
 using static HMSContracts.Constants.SysEnums.Status;
 
 
@@ -13,13 +15,10 @@ namespace HMSDataAccess.Repo.Appointment
         Task DeleteAppointment(AppointmentEntity Appointment);
         Task<AppointmentEntity?> GetAppointmentByIdAsNoTracking(int id);
         Task<AppointmentEntity?> GetAppointmentById(int id);
-        Task<List<AppointmentEntity>> GetAllAppointmentsForDoctor(string docId);
-        Task<List<AppointmentEntity>> GetAllAppointmentsForPatient(string patientId);
+        Task<List<AppointmentEntity>> GetAllAppointments(string? docId = null, string? patientId = null);
         void UpdateAppointment(AppointmentEntity appointment);
-        List<AppointmentEntity> AllAppointmentsForDoctorInSpecificDate(AppointmentEntity appointment);
-        Task<DoctorScheduleEntity?> docScheduleWithSameDate(AppointmentEntity appointment);
-
-        List<AppointmentEntity> GetDoctorAppointmentsWithInaDate(string doctorId, DateOnly date);
+        List<AppointmentEntity> GetDoctorAppointmentsByDate(DateOnly date, string doctorId, Status status);
+        List<AppointmentEntity> GetDoctorScheduleAppointments(DoctorScheduleEntity doctorSchedules);
     }
     public class AppointmentRepo : IAppointmentRepo
     {
@@ -34,15 +33,10 @@ namespace HMSDataAccess.Repo.Appointment
             await _dbContext.SaveChangesAsync();
         }
 
-        public List<AppointmentEntity> AllAppointmentsForDoctorInSpecificDate(AppointmentEntity appointment) =>
+        public List<AppointmentEntity> GetDoctorAppointmentsByDate(DateOnly date, string doctorId, Status status) =>
              _dbContext.Appointments
-                    .Where(a => a.DoctorId == appointment.DoctorId
-                         && a.Date == appointment.Date && a.Status == complete).ToList();
-
-        public async Task<DoctorScheduleEntity?> docScheduleWithSameDate(AppointmentEntity appointment) =>
-             await _dbContext.DoctorSchedule.Where(a => a.Date == appointment.Date)
-                      .FirstOrDefaultAsync(a => a.DoctorId == appointment.DoctorId);
-
+                    .Where(a => a.DoctorId == doctorId
+                         && a.Date == date && a.Status == status).ToList();
 
         public async Task DeleteAppointment(AppointmentEntity appointment)
         {
@@ -50,16 +44,19 @@ namespace HMSDataAccess.Repo.Appointment
             await _dbContext.SaveChangesAsync();
         }
         public async Task<AppointmentEntity?> GetAppointmentByIdAsNoTracking(int id) =>
-            await _dbContext.Appointments.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+            await _dbContext.Appointments.AsNoTracking().Include(a => a.Doctor).Include(a => a.Patient).FirstOrDefaultAsync(a => a.Id == id);
 
         public async Task<AppointmentEntity?> GetAppointmentById(int id) =>
            await _dbContext.Appointments.FindAsync(id);
 
-        public async Task<List<AppointmentEntity>> GetAllAppointmentsForDoctor(string docId) =>
-             await _dbContext.Appointments.Where(a => a.DoctorId == docId).AsNoTracking().ToListAsync();
-
-        public async Task<List<AppointmentEntity>> GetAllAppointmentsForPatient(string patientId) =>
-             await _dbContext.Appointments.Where(a => a.PatientId == patientId).AsNoTracking().ToListAsync();
+        public async Task<List<AppointmentEntity>> GetAllAppointments(string? docId=null, string? patientId=null)=>
+             await _dbContext.Appointments
+                    .Where(a=> (docId==null || a.DoctorId==docId) && (patientId==null || a.PatientId==patientId))
+                    .Include(a => a.Doctor)
+                    .Include(a => a.Patient)
+                    .AsNoTracking()
+                    .ToListAsync();
+        
 
         public void UpdateAppointment(AppointmentEntity appointment)
         {
@@ -67,9 +64,11 @@ namespace HMSDataAccess.Repo.Appointment
             _dbContext.SaveChanges();
         }
 
-        public List<AppointmentEntity> GetDoctorAppointmentsWithInaDate(string doctorId, DateOnly date) =>
-            _dbContext.Appointments.Where(a => a.DoctorId == doctorId &&
-                  a.Status == complete && a.Date == date).ToList();
+        public List<AppointmentEntity> GetDoctorScheduleAppointments(DoctorScheduleEntity doctorSchedule) =>
+            _dbContext.Appointments.Where(a => a.DoctorId == doctorSchedule.DoctorId &&
+                  a.Status == complete && a.Date == doctorSchedule.Date &&
+                  doctorSchedule.StartTime <= a.StartTime && a.StartTime < doctorSchedule.EndTime &&
+                  doctorSchedule.StartTime < a.EndTime && a.EndTime <= doctorSchedule.EndTime).ToList();
 
     }
 }

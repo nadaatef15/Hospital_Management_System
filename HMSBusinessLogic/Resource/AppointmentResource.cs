@@ -14,8 +14,8 @@ namespace HMSBusinessLogic.Resource
 
         public Status Status { get; set; }
 
-        public string DoctorId { get; set; }
+        public DoctorResource? Doctor { get; set; }
 
-        public string PatientId { get; set; }
+        public PatientResource? Patient { get; set; }
     }
 }

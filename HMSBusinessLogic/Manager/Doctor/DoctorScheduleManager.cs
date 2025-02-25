@@ -41,15 +41,15 @@ namespace HMSBusinessLogic.Manager.Doctor
             await _doctorScheduleRepo.CreateSchedule(docSchedule);
         }
 
-        public async Task<List< DoctorScheduleResource>> GetDoctorSchedulesForDoctor
+        public async Task<List<DoctorScheduleResource>> GetDoctorSchedulesForDoctor
             (string docId  , DateOnly? dateFrom, DateOnly? dateTo) 
         {
             var doctor = await _doctorScheduleRepo.GetDoctorById(docId) ??
                 throw new NotFoundException(UseDoesnotExist);
 
-            var doctorScheduleEntities= _doctorScheduleRepo.GetSchedulesForDoctor(docId , dateFrom , dateTo);
+            var doctorScheduleEntities= await _doctorScheduleRepo.GetDoctorSchedules(docId , dateFrom , dateTo);
 
-            return doctorScheduleEntities.Select(a=>a.ToResource()).ToList();
+            return  doctorScheduleEntities.Select(a=>a.ToResource()).ToList();
         }
 
         public async Task UpdateDoctorSchedule(int id, DoctorScheduleModel model)
@@ -62,9 +62,10 @@ namespace HMSBusinessLogic.Manager.Doctor
             var doctorSchedule= await _doctorScheduleRepo.GetDoctorScheduleByScheduleId(id)??
                      throw new NotFoundException(ScheduleIsNotExist);
 
-            var appointments = _appointmentRepo.GetDoctorAppointmentsWithInaDate(model.DoctorId , model.Date);
+            var appointments = _appointmentRepo.GetDoctorScheduleAppointments(doctorSchedule);
 
-           if(!appointments.Any(a => model.StartTime > a.EndTime && model.EndTime < a.StartTime))
+            if (appointments.Any(a => (a.StartTime < model.StartTime || model.EndTime < a.StartTime) ||
+                             (a.EndTime < model.StartTime || model.EndTime < a.EndTime)))
                     throw new ConflictException("The schedule time conflicts with an existing appointment");
 
             var docSchedule = model.ToEntity();
@@ -77,7 +78,7 @@ namespace HMSBusinessLogic.Manager.Doctor
             var docSchedule =await _doctorScheduleRepo.GetDoctorScheduleByScheduleId(id) ?? 
                 throw new NotFoundException(ScheduleIsNotExist);
 
-            var result = _appointmentRepo.GetDoctorAppointmentsWithInaDate(docSchedule.DoctorId , docSchedule.Date) ??
+            var result = _appointmentRepo.GetDoctorScheduleAppointments(docSchedule) ??
                  throw new ConflictException("There are Appointments you can not Delete the schedule");
 
            await _doctorScheduleRepo.DeleteSchedule(docSchedule);
