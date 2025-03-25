@@ -61,11 +61,38 @@ namespace HMSContracts.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is another appointment in this time .
+        /// </summary>
+        public static string AnotherAppointmentInTime {
+            get {
+                return ResourceManager.GetString("AnotherAppointmentInTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The appointment does not exist.
         /// </summary>
         public static string appointmentDoesnotExist {
             get {
                 return ResourceManager.GetString("appointmentDoesnotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appointment Time is not in a Schedule.
+        /// </summary>
+        public static string AppointmentTimeNotInSchedue {
+            get {
+                return ResourceManager.GetString("AppointmentTimeNotInSchedue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diagnoses are not found .
+        /// </summary>
+        public static string DiagnosesNotFound {
+            get {
+                return ResourceManager.GetString("DiagnosesNotFound", resourceCulture);
             }
         }
         
@@ -84,6 +111,15 @@ namespace HMSContracts.Language {
         public static string DocHasSpecialty {
             get {
                 return ResourceManager.GetString("DocHasSpecialty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;The Doctor Does not has the MedicalRecord or MedicalRecord is not exist&quot;.
+        /// </summary>
+        public static string DoctorDorsNotHaveMedicalRecord {
+            get {
+                return ResourceManager.GetString("DoctorDorsNotHaveMedicalRecord", resourceCulture);
             }
         }
         
@@ -142,6 +178,24 @@ namespace HMSContracts.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to this Medical Record Test is not found.
+        /// </summary>
+        public static string MedicalRecordTestNotFound {
+            get {
+                return ResourceManager.GetString("MedicalRecordTestNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Medicine is not found.
+        /// </summary>
+        public static string Medicinenotfound {
+            get {
+                return ResourceManager.GetString("Medicinenotfound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This Medical Record is deleted.
         /// </summary>
         public static string MRDeleted {
@@ -169,11 +223,38 @@ namespace HMSContracts.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This name is used before.
+        /// </summary>
+        public static string NameIsUsedBefore {
+            get {
+                return ResourceManager.GetString("NameIsUsedBefore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no Specialties for the Doctor.
         /// </summary>
         public static string NoSpecialtyForDoctor {
             get {
                 return ResourceManager.GetString("NoSpecialtyForDoctor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;You can not delete Prescription has been dispensed&quot;.
+        /// </summary>
+        public static string NotDeletePrescriptionDispensed {
+            get {
+                return ResourceManager.GetString("NotDeletePrescriptionDispensed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current user is Not a LabTechnician.
+        /// </summary>
+        public static string notLabTechnician {
+            get {
+                return ResourceManager.GetString("notLabTechnician", resourceCulture);
             }
         }
         
@@ -210,6 +291,33 @@ namespace HMSContracts.Language {
         public static string pharmDoesnotExist {
             get {
                 return ResourceManager.GetString("pharmDoesnotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This prescription has been Dispensed.You can not Update it.
+        /// </summary>
+        public static string PrescriptionDispensedUpdated {
+            get {
+                return ResourceManager.GetString("PrescriptionDispensedUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Prescription has been Dispensed already.
+        /// </summary>
+        public static string PrescriptionIsDispensed {
+            get {
+                return ResourceManager.GetString("PrescriptionIsDispensed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Prescription is not Found.
+        /// </summary>
+        public static string PrescriptionNotFound {
+            get {
+                return ResourceManager.GetString("PrescriptionNotFound", resourceCulture);
             }
         }
         
@@ -300,6 +408,24 @@ namespace HMSContracts.Language {
         public static string SpecialityIsNotExist {
             get {
                 return ResourceManager.GetString("SpecialityIsNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Is  In MedicalRecord.
+        /// </summary>
+        public static string TestIsInMedicalRecord {
+            get {
+                return ResourceManager.GetString("TestIsInMedicalRecord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Test is not Found.
+        /// </summary>
+        public static string TestNotFound {
+            get {
+                return ResourceManager.GetString("TestNotFound", resourceCulture);
             }
         }
         

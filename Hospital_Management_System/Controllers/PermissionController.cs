@@ -21,10 +21,10 @@ namespace Hospital_Management_System.Controllers
                 return Ok(result);
         }
 
-        [HttpPost("roleId" , Name = "EditPermissionsForRole")]
+        [HttpPost(Name = "EditRolePermissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
 
-        public async Task <IActionResult> EditPermissionsForRole(string roleId, List<PermissionModel> permissionModels)
+        public async Task <IActionResult> EditRolePermissions(string roleId, List<PermissionModel> permissionModels)
         {
             await permissionManager.EditPermissionsforRole(permissionModels, roleId);
             return Ok();

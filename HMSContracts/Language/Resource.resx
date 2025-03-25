@@ -213,4 +213,46 @@
   <data name="ScheduleIsNotExist" xml:space="preserve">
     <value>This Schedule is not Exist</value>
   </data>
+  <data name="Medicinenotfound" xml:space="preserve">
+    <value>This Medicine is not found</value>
+  </data>
+  <data name="PrescriptionNotFound" xml:space="preserve">
+    <value>This Prescription is not Found</value>
+  </data>
+  <data name="PrescriptionIsDispensed" xml:space="preserve">
+    <value>This Prescription has been Dispensed already</value>
+  </data>
+  <data name="DoctorDorsNotHaveMedicalRecord" xml:space="preserve">
+    <value>"The Doctor Does not has the MedicalRecord or MedicalRecord is not exist"</value>
+  </data>
+  <data name="NotDeletePrescriptionDispensed" xml:space="preserve">
+    <value>"You can not delete Prescription has been dispensed"</value>
+  </data>
+  <data name="PrescriptionDispensedUpdated" xml:space="preserve">
+    <value>This prescription has been Dispensed.You can not Update it</value>
+  </data>
+  <data name="TestNotFound" xml:space="preserve">
+    <value>This Test is not Found</value>
+  </data>
+  <data name="NameIsUsedBefore" xml:space="preserve">
+    <value>This name is used before</value>
+  </data>
+  <data name="TestIsInMedicalRecord" xml:space="preserve">
+    <value>Test Is  In MedicalRecord</value>
+  </data>
+  <data name="notLabTechnician" xml:space="preserve">
+    <value>Current user is Not a LabTechnician</value>
+  </data>
+  <data name="DiagnosesNotFound" xml:space="preserve">
+    <value>Diagnoses are not found </value>
+  </data>
+  <data name="AnotherAppointmentInTime" xml:space="preserve">
+    <value>There is another appointment in this time </value>
+  </data>
+  <data name="AppointmentTimeNotInSchedue" xml:space="preserve">
+    <value>Appointment Time is not in a Schedule</value>
+  </data>
+  <data name="MedicalRecordTestNotFound" xml:space="preserve">
+    <value>this Medical Record Test is not found</value>
+  </data>
 </root>

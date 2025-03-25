@@ -29,11 +29,11 @@ namespace HMSDataAccess.Entity
         public AppointmentEntity Appointment { get; set; }
 
 
-        public  List<MedicalRecordDiagnoses> medicalRecordDiagnoses = new List<MedicalRecordDiagnoses>();
+        public  List<MedicalRecordDiagnoses> MedicalRecordDiagnoses { get; set; } = new List<MedicalRecordDiagnoses>();
 
-        public  List<MedicalRecordTests> medicalRecordTests = new List<MedicalRecordTests>();
+        public  List<MedicalRecordTests> MedicalRecordTests { get; set; } = new List<MedicalRecordTests>();
 
-        public List<PrescriptionEntity> prescriptions = new List<PrescriptionEntity>(); 
+        public List<PrescriptionEntity> Prescriptions { get; set; } = new List<PrescriptionEntity>(); 
 
     }
 }

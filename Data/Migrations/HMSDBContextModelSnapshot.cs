@@ -309,6 +309,8 @@ namespace HMSDataAccess.Migrations
 
                     b.HasKey("MedicalRecordId", "DiagnosesId");
 
+                    b.HasIndex("DiagnosesId");
+
                     b.ToTable("MedicalRecordDiagnoses");
                 });
 
@@ -392,9 +394,6 @@ namespace HMSDataAccess.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ExecutedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("ExecutedOn")
                         .HasColumnType("datetime2");
 
@@ -402,16 +401,19 @@ namespace HMSDataAccess.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LabTechnicianId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("MedicalRecordEntityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TestResult")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TestId", "MedicalRecordId");
 
                     b.HasIndex("LabTechnicianId");
+
+                    b.HasIndex("MedicalRecordId");
 
                     b.ToTable("MedicalRecordTests");
                 });
@@ -721,10 +723,9 @@ namespace HMSDataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DispinsedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("DispinsedOn")
+                    b.Property<DateTime?>("DispinsedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Dosage")
@@ -740,9 +741,6 @@ namespace HMSDataAccess.Migrations
                     b.Property<int>("MedicineId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PharmasistId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Quentity")
                         .HasColumnType("int");
 
@@ -754,11 +752,11 @@ namespace HMSDataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DispinsedById");
+
                     b.HasIndex("MedicalRecordId");
 
                     b.HasIndex("MedicineId");
-
-                    b.HasIndex("PharmasistId");
 
                     b.ToTable("Prescriptions");
                 });
@@ -977,7 +975,7 @@ namespace HMSDataAccess.Migrations
             modelBuilder.Entity("HMSDataAccess.Entity.DoctorSpecialties", b =>
                 {
                     b.HasOne("HMSDataAccess.Entity.DoctorEntity", "Doctor")
-                        .WithMany()
+                        .WithMany("DoctorSpecialties")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1023,6 +1021,25 @@ namespace HMSDataAccess.Migrations
                     b.Navigation("Invoice");
                 });
 
+            modelBuilder.Entity("HMSDataAccess.Entity.MedicalRecordDiagnoses", b =>
+                {
+                    b.HasOne("HMSDataAccess.Entity.DiagnosesEntity", "Diagnoses")
+                        .WithMany()
+                        .HasForeignKey("DiagnosesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HMSDataAccess.Entity.MedicalRecordEntity", "MedicalRecord")
+                        .WithMany("medicalRecordDiagnoses")
+                        .HasForeignKey("MedicalRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diagnoses");
+
+                    b.Navigation("MedicalRecord");
+                });
+
             modelBuilder.Entity("HMSDataAccess.Entity.MedicalRecordEntity", b =>
                 {
                     b.HasOne("HMSDataAccess.Entity.AppointmentEntity", "Appointment")
@@ -1054,11 +1071,29 @@ namespace HMSDataAccess.Migrations
                 {
                     b.HasOne("HMSDataAccess.Entity.LabTechnicianEntity", "LabTechnician")
                         .WithMany("MedicalRecordTests")
-                        .HasForeignKey("LabTechnicianId")
+                        .HasForeignKey("LabTechnicianId");
+
+                    b.HasOne("HMSDataAccess.Entity.MedicalRecordEntity", "MedicalRecord")
+                        .WithMany("medicalRecordTests")
+                        .HasForeignKey("MedicalRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HMSDataAccess.Entity.TestEntity", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HMSDataAccess.Entity.MedicalRecordEntity", null)
+                        .WithMany("medicalRecordTests")
+                        .HasForeignKey("MedicalRecordEntityId");
+
                     b.Navigation("LabTechnician");
+
+                    b.Navigation("MedicalRecord");
+
+                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("HMSDataAccess.Entity.PaymentEntity", b =>
@@ -1082,8 +1117,12 @@ namespace HMSDataAccess.Migrations
 
             modelBuilder.Entity("HMSDataAccess.Model.PrescriptionEntity", b =>
                 {
+                    b.HasOne("HMSDataAccess.Entity.PharmacistEntity", "Pharmasist")
+                        .WithMany("Prescriptions")
+                        .HasForeignKey("DispinsedById");
+
                     b.HasOne("HMSDataAccess.Entity.MedicalRecordEntity", "MedicalRecord")
-                        .WithMany()
+                        .WithMany("prescriptions")
                         .HasForeignKey("MedicalRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1093,10 +1132,6 @@ namespace HMSDataAccess.Migrations
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("HMSDataAccess.Entity.PharmacistEntity", "Pharmasist")
-                        .WithMany("Prescriptions")
-                        .HasForeignKey("PharmasistId");
 
                     b.Navigation("MedicalRecord");
 
@@ -1201,9 +1236,20 @@ namespace HMSDataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HMSDataAccess.Entity.MedicalRecordEntity", b =>
+                {
+                    b.Navigation("medicalRecordDiagnoses");
+
+                    b.Navigation("medicalRecordTests");
+
+                    b.Navigation("prescriptions");
+                });
+
             modelBuilder.Entity("HMSDataAccess.Entity.DoctorEntity", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("DoctorSpecialties");
 
                     b.Navigation("Schedules");
                 });

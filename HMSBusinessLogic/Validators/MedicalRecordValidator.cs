@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using HMSContracts.Model.MedicalRecord;
 using HMSDataAccess.DBContext;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using static HMSContracts.Language.Resource;
 
 
@@ -10,41 +12,54 @@ namespace HMSBusinessLogic.Validators
     public class MedicalRecordValidator : AbstractValidator<MedicalRecordModel>
     {
         private readonly HMSDBContext _dbContext;
-        public MedicalRecordValidator(HMSDBContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public MedicalRecordValidator(HMSDBContext context, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = context;
+            _httpContextAccessor = httpContextAccessor;
 
-            RuleFor(x => x)
-                .MustAsync(DoctorExist)
-                .WithMessage(UseDoesnotExist);
+          
+            RuleFor(x => x.AppointmentId)
+               .MustAsync(AppointmentExist)
+               .WithMessage(appointmentDoesnotExist);
 
-            RuleFor(x => x)
-                .MustAsync(PatientExist)
-                .WithMessage(UseDoesnotExist);
+            RuleFor(x => x.Diagnoses)
+               .MustAsync(IsDiagnosesExist)
+               .WithMessage(DiagnosesNotFound);
 
 
-            RuleFor(x => x)
-               .MustAsync(PatientHasTheAppointment)
-               .WithMessage(patientDoesnotHasThisAppointment);
+            RuleFor(x => x.Tests)
+               .MustAsync(IsTestsExist)
+               .WithMessage(TestNotFound);
+
         }
 
-        public async Task<bool> DoctorExist(MedicalRecordModel model, CancellationToken cancellation)
+        public async Task<bool> AppointmentExist(int appointmentId, CancellationToken cancellation)
         {
-            var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(a => a.Id == model.DoctorId);
-            return doctor is null;
+            var userId = _httpContextAccessor.HttpContext?.User?.Claims
+                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return await _dbContext.Appointments.AnyAsync(a => a.Id == appointmentId && a.DoctorId == userId); 
         }
 
-        public async Task<bool> PatientExist(MedicalRecordModel model, CancellationToken cancellation)
+        public async Task<bool> IsDiagnosesExist(List<int> dignosesIds, CancellationToken cancellation)
         {
-            var patient = await _dbContext.Patients.FirstOrDefaultAsync(a => a.Id == model.PatientId);
-            return patient is null;
-        }
+            var exist= await _dbContext.Diagnoses
+                   .Where(a=> dignosesIds.Contains(a.Id))
+                   .Select(a=>a.Id)
+                   .CountAsync();
 
-        public async Task<bool> PatientHasTheAppointment(MedicalRecordModel model, CancellationToken cancellation)
+            return dignosesIds.Count == exist;
+        }
+          
+        public async Task<bool> IsTestsExist(List<int> testsIds, CancellationToken cancellationToken)
         {
-            var appointment = await _dbContext.Appointments.Where(a => a.PatientId == model.PatientId).FirstOrDefaultAsync(a => a.Id == model.AppointmentId);
-            return appointment is null;
-        }
+            var exist= await _dbContext.Tests
+                .Where(a=> testsIds.Contains(a.Id))
+                .Select(a=>a.Id)
+                .CountAsync();
 
+            return testsIds.Count == exist;
+        }
     }
 }

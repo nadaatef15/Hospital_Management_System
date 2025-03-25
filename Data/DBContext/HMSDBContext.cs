@@ -117,7 +117,7 @@ namespace HMSDataAccess.DBContext
                 else if (entry.State == EntityState.Modified && entry.Entity is ITrackable trackable)
                 {
                     trackable.UpdatedOn = DateTime.Now;
-                    trackable.UpdatedBy = _httpContextAccessor.HttpContext?.User.Identity?.Name;
+                    trackable.UpdatedBy = _httpContextAccessor.HttpContext?.User.Identity?.Name ?? "System";
                 }
             }
             return await base.SaveChangesAsync(cancellationToken);

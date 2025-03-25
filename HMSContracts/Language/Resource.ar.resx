@@ -213,4 +213,46 @@
   <data name="ScheduleIsNotExist" xml:space="preserve">
     <value>هذا الجدول غير موجود</value>
   </data>
+  <data name="Medicinenotfound" xml:space="preserve">
+    <value>الدواء غير متوفر</value>
+  </data>
+  <data name="PrescriptionNotFound" xml:space="preserve">
+    <value>الروشيته غير موجوده</value>
+  </data>
+  <data name="PrescriptionIsDispensed" xml:space="preserve">
+    <value>تم صرف هذه الروشيته</value>
+  </data>
+  <data name="DoctorDorsNotHaveMedicalRecord" xml:space="preserve">
+    <value>التقرير الطبي عير موجود او الطبيب لا يملك هذا التقرير الطبي</value>
+  </data>
+  <data name="NotDeletePrescriptionDispensed" xml:space="preserve">
+    <value>لا يمكن حذا روشيته تم صرفها</value>
+  </data>
+  <data name="PrescriptionDispensedUpdated" xml:space="preserve">
+    <value>لا يمكن التعديل على روشيته تم صرفها</value>
+  </data>
+  <data name="TestNotFound" xml:space="preserve">
+    <value>هذا الاختبار غير متوافر</value>
+  </data>
+  <data name="NameIsUsedBefore" xml:space="preserve">
+    <value>هذا الاسم مستخدم </value>
+  </data>
+  <data name="TestIsInMedicalRecord" xml:space="preserve">
+    <value>هذا الاختبار مستخدم ف تقرير طبي </value>
+  </data>
+  <data name="notLabTechnician" xml:space="preserve">
+    <value>المستخدم الحالي ليس فني مختبر</value>
+  </data>
+  <data name="DiagnosesNotFound" xml:space="preserve">
+    <value>التشخيص غير متوفر</value>
+  </data>
+  <data name="AnotherAppointmentInTime" xml:space="preserve">
+    <value>هناك موعد اخر ف هذا الوقت</value>
+  </data>
+  <data name="AppointmentTimeNotInSchedue" xml:space="preserve">
+    <value>الموعد الذي حدته غير متوفر خلال الجدول</value>
+  </data>
+  <data name="MedicalRecordTestNotFound" xml:space="preserve">
+    <value>هذا الاختبار والتقرير الطبي غير موجودين</value>
+  </data>
 </root>

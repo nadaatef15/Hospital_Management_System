@@ -15,7 +15,7 @@ using static HMSContracts.Language.Resource;
 
 namespace HMSBusinessLogic.Manager.LabTechnician
 {
-    public interface ILabTechnicianManager
+    public interface ILabTechniciansManager
     {
         Task<UserResource> RegisterLabTech(labTechnicianModel user);
         Task UpdateLabTech(string id, labTechnicianModel labTechModel);
@@ -23,7 +23,7 @@ namespace HMSBusinessLogic.Manager.LabTechnician
         Task<List<UserResource>> GetAllLabTechs();
 
     }
-    public class LabTechnicianManager : ILabTechnicianManager
+    public class LabTechnicianManager : ILabTechniciansManager
     {
         private readonly UserManager<UserEntity> _userManagerIdentity;
         private readonly IValidator<UserModel> _validator;

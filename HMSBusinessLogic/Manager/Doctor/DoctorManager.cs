@@ -83,14 +83,14 @@ namespace HMSBusinessLogic.Manager.Doctor
             return (await _doctorRepo.GetDoctorByIdAsNoTracking(doctorEntity.Id))!.ToResource();
         }
 
-        public async Task UpdateDoctor(string dctorId, DoctorModel model)
+        public async Task UpdateDoctor(string doctorId, DoctorModel model)
         {
-            if (model.Id != dctorId)
+            if (model.Id != doctorId)
                 throw new ConflictException(NotTheSameId);
 
             await _validator.ValidateAndThrowAsync(model);
 
-            var doctor = await _doctorRepo.GetDoctorById(dctorId) ??
+            var doctor = await _doctorRepo.GetDoctorById(doctorId) ??
                 throw new NotFoundException(UseDoesnotExist);
 
             if (model.Image is not null)

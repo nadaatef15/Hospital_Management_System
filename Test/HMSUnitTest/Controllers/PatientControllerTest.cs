@@ -11,12 +11,12 @@ namespace HMSUnitTest.Controllers
     public class PatientControllerTest
     {
         private readonly Mock<IPatientsManager> _patientsManager;
-        private readonly PatientController _controller;
+        private readonly PatientsController _controller;
 
         public PatientControllerTest()
         {
             _patientsManager = new Mock<IPatientsManager>();
-            _controller = new PatientController(_patientsManager.Object);
+            _controller = new PatientsController(_patientsManager.Object);
         }
 
         [Fact]

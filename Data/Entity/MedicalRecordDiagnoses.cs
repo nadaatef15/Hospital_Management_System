@@ -8,9 +8,11 @@ namespace HMSDataAccess.Entity
     {
         [Key]
         public int MedicalRecordId { get; set; }
+        public MedicalRecordEntity MedicalRecord { get; set; }
 
         [Key]
-        public int DiagnosesId {  get; set; }   
+        public int DiagnosesId {  get; set; }
+        public DiagnosesEntity Diagnoses { get; set; }
 
     }
 }

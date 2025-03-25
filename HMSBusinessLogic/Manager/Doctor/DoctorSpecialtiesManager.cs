@@ -2,7 +2,6 @@
 using HMSBusinessLogic.Helpers.Mappers;
 using HMSBusinessLogic.Resource;
 using HMSContracts.Model.Specialty;
-using HMSDataAccess.Entity;
 using HMSDataAccess.Repo.Doctor;
 using static HMSContracts.Infrastructure.Exceptions.TypesOfExceptions;
 using static HMSContracts.Language.Resource;

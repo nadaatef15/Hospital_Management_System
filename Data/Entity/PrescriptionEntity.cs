@@ -1,5 +1,6 @@
 ﻿using HMSDataAccess.Entity;
 using HMSDataAccess.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HMSDataAccess.Model
 {
@@ -7,17 +8,20 @@ namespace HMSDataAccess.Model
     {
         public int Id { get; set; }
         public string Dosage {  get; set; }
-        public DateTime Date {  get; set; } 
+        public DateTime Date {  get; set; } = DateTime.Now;
         public int Quentity { get; set; }
 
         public int MedicalRecordId { get; set; }
         public MedicalRecordEntity MedicalRecord {  get; set; }
-        public int MedicineId {  get; set; }    
-        public MedicineEntity Medicine { get; set; }  
-        public string DispinsedById {  get; set; }   
-        public PharmacistEntity Pharmasist { get; set; }
 
-        public DateTime DispinsedOn {  get; set; }
+        public int MedicineId {  get; set; }        
+        public MedicineEntity Medicine { get; set; }
+
+        [ForeignKey(nameof(Pharmasist))]       
+        public string? DispinsedById {  get; set; }   
+        public PharmacistEntity? Pharmasist { get; set; }
+
+        public DateTime? DispinsedOn {  get; set; }
 
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedOn { get; set; }
