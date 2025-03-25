@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hospital_Management_System", "Hospital_Management_System\Hospital_Management_System.csproj", "{BC3E7836-E4B8-4F37-8FA6-E096773BBFCC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSDataAccess", "Data\HMSDataAccess.csproj", "{14A2901E-1221-440C-BC39-4575EA612BD8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSBusinessLogic", "HMSBusinessLogic\HMSBusinessLogic.csproj", "{43A68B2A-A713-485E-8195-A904BED9C1B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HMSContracts", "HMSContracts\HMSContracts.csproj", "{CE4BFD2D-60D1-4C35-814F-F94FECDB7D38}"
@@ -14,6 +12,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A59EDBF8-1BD7-4189-9FF2-933911F45A4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMSUnitTest", "Test\HMSUnitTest\HMSUnitTest.csproj", "{28B81172-24E9-459B-8BA5-C56AA11AB40B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMSDataAccess", "HMSDataAccess\HMSDataAccess.csproj", "{6D6484A6-F691-4257-9A0D-1292113B63F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{BC3E7836-E4B8-4F37-8FA6-E096773BBFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC3E7836-E4B8-4F37-8FA6-E096773BBFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC3E7836-E4B8-4F37-8FA6-E096773BBFCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14A2901E-1221-440C-BC39-4575EA612BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14A2901E-1221-440C-BC39-4575EA612BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14A2901E-1221-440C-BC39-4575EA612BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14A2901E-1221-440C-BC39-4575EA612BD8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43A68B2A-A713-485E-8195-A904BED9C1B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43A68B2A-A713-485E-8195-A904BED9C1B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A68B2A-A713-485E-8195-A904BED9C1B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +37,10 @@ Global
 		{28B81172-24E9-459B-8BA5-C56AA11AB40B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28B81172-24E9-459B-8BA5-C56AA11AB40B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28B81172-24E9-459B-8BA5-C56AA11AB40B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D6484A6-F691-4257-9A0D-1292113B63F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D6484A6-F691-4257-9A0D-1292113B63F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D6484A6-F691-4257-9A0D-1292113B63F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D6484A6-F691-4257-9A0D-1292113B63F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

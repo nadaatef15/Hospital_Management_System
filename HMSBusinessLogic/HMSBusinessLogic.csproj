@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\HMSDataAccess.csproj" />
     <ProjectReference Include="..\HMSContracts\HMSContracts.csproj" />
+    <ProjectReference Include="..\HMSDataAccess\HMSDataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>
